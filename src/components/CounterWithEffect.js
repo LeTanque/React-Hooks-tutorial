@@ -3,7 +3,7 @@ import React, { useState, useEffect, Fragment } from 'react';
 
 const Counter = () => {
 
-  // This is a hook
+  // This is a hook. Starts set to 0, modified with setCount, state viewed from count
   const [count, setCount] = useState(0);
 
   // Similar to componentDidMount and componentDidUpdate:

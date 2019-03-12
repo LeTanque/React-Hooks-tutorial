@@ -7,12 +7,16 @@ import CounterWithEffect from './components/CounterWithEffect';
 // Hooks basically makes a state that is accessible to other components through props.
 // Except you can easily manage state from any linked component.
 
-// Logically, you name the variables that modify hooks are named 'setBanana'
 
-// const [ line, hook ] = useState(bait); 
-// The line is how you connect to the the hook
-// The hook 
-// The bait is what you place on the hook in the beginning
+// const [ viewState, setState ] = useState(initialState); 
+// This is a hook
+// initialState can be pretty much anything
+// setState is going to be a function that you pass the new state into. setState(newState)
+// viewState is the latest state of the hook. Will be stateful when passed to other components
+
+// const [ state, function ] = useState(const);   // Another way to deconstruct a hook
+// onClick={function(Y)}
+// Now the state becomes Y
 
 
 const App = () => {  // Functional component doing cool class component stuff
@@ -34,11 +38,6 @@ const App = () => {  // Functional component doing cool class component stuff
   const [ users, setUsers ] = useState(usersData);
 
   
-  // users is stateful users, or users is current state
-  // usersData is the initial state only
-  const lastUID = users[users.length - 1].id;       
-  
-
   // This is basically 'edit mode'. Creates an 'editing' key in state.  sets it equal to false by default
   // 'editing' is a stateful value
   // setEditing is how you modify it from state
@@ -50,9 +49,14 @@ const App = () => {  // Functional component doing cool class component stuff
   const [ currentUser, setCurrentUser ] = useState(initialFormState); 
 
 
+  // users is current state of users
+  // But, usersData is the initial state only. Don't modify the source supply.
+  const lastUID = users[users.length - 1].id;       
+  
+
   const addUser = user => {
     user.id = lastUID + 1;
-    setUsers([ ...users, user ]) // setUsers taking in the current state and updating it with the current state plus something
+    setUsers([ ...users, user ]) // setUsers hook taking in the current state and updating it with the current state plus something
   }
 
 
