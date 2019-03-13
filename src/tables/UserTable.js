@@ -4,7 +4,8 @@ import React, { Fragment } from 'react'
 
 
 const UserTable = props => {
-    console.log(props);
+
+    // console.log('UserTable \nprops:',props);
 
     return (
         <Fragment>
@@ -13,6 +14,7 @@ const UserTable = props => {
                     <tr>
                         <th>Name</th>
                         <th>Username</th>
+                        <th>Score</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -22,6 +24,7 @@ const UserTable = props => {
                             <tr key={user.id}>
                                 <td>{user.name}</td>
                                 <td>{user.username}</td>
+                                <td>{user.score}</td>
                                 <td>
                                     <button className="button muted-button" onClick={() => {props.editUser(user)}}>
                                         Edit

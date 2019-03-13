@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 const AddUserForm = props => {
-    const initialFormState = { id: null, name: '', username: '' }
+    const initialFormState = { id: null, name: '', username: '', score: null }
 
     const [ user, setUser ] = useState(initialFormState);
 
@@ -9,6 +9,8 @@ const AddUserForm = props => {
         const { name, value } = event.target;
         setUser({ ...user, [name]: value })
     }
+
+    // console.log('AddUserForm props\naddUser:',props)
 
     return (
         <form

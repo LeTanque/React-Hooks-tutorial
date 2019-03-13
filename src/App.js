@@ -1,8 +1,9 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import UserTable from './tables/UserTable';
 import AddUserForm from './forms/AddUserForm';
 import EditUserForm from './forms/EditUserForm';
 import CounterWithEffect from './components/CounterWithEffect';
+
 
 // Hooks basically makes a state that is accessible to other components through props.
 // Except you can easily manage state from any linked component.
@@ -19,13 +20,13 @@ import CounterWithEffect from './components/CounterWithEffect';
 // Now the state becomes Y
 
 
-const App = () => {  // Functional component doing cool class component stuff
+const App = () => {  // Functional component doing cool class component-like state stuff
   const usersData = [
-    { id: 1, name: 'Tania', username: 'floppydiskette' },
-    { id: 2, name: 'Craig', username: 'siliconeidolon' },
-    { id: 3, name: 'Ben', username: 'benisphere' },
+    { id: 1, name: 'Tania', username: 'floppydiskette', score:0 },
+    { id: 2, name: 'Craig', username: 'siliconeidolon', score:0 },
+    { id: 3, name: 'Ben', username: 'benisphere', score:0 },
   ]
-  const initialFormState = { id: null, name: '', username: '' }
+  const initialFormState = { id: null, name: '', username: '', score:0 };
   
 
   // Users doesn't exist until we create it here, as 'users', 
@@ -44,13 +45,29 @@ const App = () => {  // Functional component doing cool class component stuff
   const [ editing, setEditing ] = useState(false);
 
 
+  // This is a hook. Starts set to 0, modified with setCount, state viewed from count
+  const [ count, setCount ] = useState(0);
+
+
   // setEditing and setCurrentUser are toggles as well
   // when setEditing is true, current user is filled. When it's false, current user is clear.
   const [ currentUser, setCurrentUser ] = useState(initialFormState); 
 
 
+  // Hook for user's personal counts
+  const [ userScore, setUserScore ] = useState(0);
+
+
+  // Maybe not something would create on a production site, or maybe yes. 
+  // React dev tools don't provide much detail about hook state at each component
+  // Not from tutorial
+  // const currentState = [users,editing,currentUser];
+  // Complicated this as a console.log that saves a few clicks
+  
+
   // users is current state of users
   // But, usersData is the initial state only. Don't modify the source supply.
+  // Not from tutorial
   const lastUID = users[users.length - 1].id;       
   
 
@@ -74,7 +91,8 @@ const App = () => {  // Functional component doing cool class component stuff
     setCurrentUser({
       id:user.id,
       name:user.name,
-      username:user.username
+      username:user.username,
+      score:user.score,
     })
   }
 
@@ -86,7 +104,25 @@ const App = () => {  // Functional component doing cool class component stuff
   }
 
   // console.log(lastUID)
-  console.log('This is the currentUser:',currentUser)
+  // console.log('This is the currentUser:',currentUser) // currentUser is in the currentState of App
+  console.log(`This is the currentState`,
+    `\nusers:`,users,
+    `\nediting:`,editing,
+    `\ncurrentUser:`,currentUser,
+    `\ncount:`,count,
+    `\nuserScore:`,userScore,
+  )
+
+
+  // const oldScore = () => {
+  //   props.users.filter(user=>user.id===props.currentUser.id);
+  //   console.log(oldScore.score)
+  // }
+
+  useEffect(() => {
+    currentUser.score = userScore
+  })
+
 
   return (
     <Fragment>
@@ -96,7 +132,7 @@ const App = () => {  // Functional component doing cool class component stuff
           <div className="flex-row">
           <div className="flex-large">
             {editing ? (  // If the value of editing is true, show the EditUserForm instead of the AddUserForm
-              <div>
+              <Fragment>
                 <h2>Edit user</h2>
                 <EditUserForm
                   editing={editing} // EditUserForm toggle ON
@@ -104,7 +140,7 @@ const App = () => {  // Functional component doing cool class component stuff
                   currentUser={currentUser}   // The editUser function provides this object. Button at UserTable
                   updateUser={updateUser}     // 
                 />
-              </div>
+              </Fragment>
             ) : (
               <div>
                 <h2>Add user</h2>
@@ -121,9 +157,15 @@ const App = () => {  // Functional component doing cool class component stuff
             />
           </div>
           <div className="flex-large">
-            <h2>Counter</h2>
+            <h2>Score</h2>
             <CounterWithEffect 
-              users={users} 
+              users={users}
+              currentUser={currentUser}
+              editing={editing}
+              count={count}
+              setCount={setCount}
+              userScore={userScore}
+              setUserScore={setUserScore}
             />
           </div>
 
